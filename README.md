@@ -1,4 +1,4 @@
-# Containerized FastAPI + PostgreSQL Project
+# Containerized Web Application with PostgreSQL using Docker Compose and Macvlan/Ipvlan
 
 This project demonstrates containerization using Docker and Docker Compose.
 
