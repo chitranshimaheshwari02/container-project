@@ -1,0 +1,99 @@
+version: "3.8"
+
+# services:
+
+#   db:
+#     build: ./database
+#     restart: always
+
+#     environment:
+#       POSTGRES_DB: mydb
+#       POSTGRES_USER: user
+#       POSTGRES_PASSWORD: password
+
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data
+
+#     networks:
+#       pub_net:
+#         ipv4_address: 192.168.1.50
+
+#     healthcheck:
+#       test: ["CMD-SHELL", "pg_isready -U user -d mydb"]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 5
+
+
+#   backend:
+#     build: ./backend
+
+#     depends_on:
+#       db:
+#         condition: service_healthy
+
+#     environment:
+#       DATABASE_URL: postgresql://user:password@192.168.1.50:5432/mydb
+
+#     ports:
+#       - "8000:8000"
+
+#     networks:
+#       pub_net:
+#         ipv4_address: 192.168.1.51
+
+
+# networks:
+#   pub_net:
+#     external: true
+
+
+# volumes:
+#   postgres_data:
+
+services:
+
+  db:
+    build: ./database
+    restart: always
+
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    networks:
+      - pub_net
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d mydb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  backend:
+    build: ./backend
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+    environment:
+      DATABASE_URL: postgresql://user:password@db:5432/mydb
+
+    ports:
+      - "8000:8000"
+
+    networks:
+      - pub_net
+
+
+networks:
+  pub_net:
+
+volumes:
+  postgres_data:
